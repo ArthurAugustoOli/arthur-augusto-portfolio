@@ -1,14 +1,11 @@
-
 ;(function initBootIntro() {
   const bootIntro = document.getElementById("bootIntro")
-
 
   if (!bootIntro) return
 
   const hasVisited = sessionStorage.getItem("portfolioVisited")
 
   if (hasVisited) {
-   
     bootIntro.remove()
     document.body.classList.add("intro-done")
     return
@@ -22,14 +19,12 @@
   const bootScan = document.querySelector(".boot-scan")
   const bootFlash = document.querySelector(".boot-flash")
 
-
   let currentLine = 0
-  const lineDelay = 500 
-  const typingDuration = 300 
+  const lineDelay = 500
+  const typingDuration = 300
 
   function showNextLine() {
     if (currentLine >= bootLines.length) {
-  
       setTimeout(showBootName, 300)
       return
     }
@@ -47,11 +42,9 @@
   function showBootName() {
     bootNameContainer.classList.add("visible")
 
-   
     setTimeout(() => {
       bootName.classList.add("glitch")
 
-      
       setTimeout(() => {
         bootName.classList.remove("glitch")
         startScan()
@@ -62,20 +55,16 @@
   function startScan() {
     bootScan.classList.add("active")
 
-  
     setTimeout(() => {
       bootFlash.classList.add("active")
 
       setTimeout(() => {
-        
         bootIntro.classList.add("hidden")
         document.body.classList.remove("intro-active")
         document.body.classList.add("intro-done")
 
-       
         sessionStorage.setItem("portfolioVisited", "true")
 
-       
         setTimeout(() => {
           bootIntro.remove()
         }, 800)
@@ -83,50 +72,51 @@
     }, 800)
   }
 
-  
   setTimeout(showNextLine, 400)
 })()
-
 
 const skillsContainer = document.querySelector(".skills-container")
 
 if (skillsContainer) {
-  skillsContainer.addEventListener("mousemove", (e) => {
-    const rect = skillsContainer.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+  // Only apply 3D effect on non-touch devices
+  const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0
 
-    const rotateX = (y / rect.height - 0.5) * -10
-    const rotateY = (x / rect.width - 0.5) * 10
-
-    skillsContainer.style.transform = `
-      rotateX(${rotateX}deg)
-      rotateY(${rotateY}deg)
-    `
-  })
-
-  skillsContainer.addEventListener("mouseleave", () => {
-    skillsContainer.style.transform = "rotateX(0deg) rotateY(0deg)"
-  })
-
-
-  const skillCards = document.querySelectorAll(".skill-card")
-
-  skillCards.forEach((card) => {
-    card.addEventListener("mousemove", (e) => {
-      const rect = card.getBoundingClientRect()
+  if (!isTouchDevice) {
+    skillsContainer.addEventListener("mousemove", (e) => {
+      const rect = skillsContainer.getBoundingClientRect()
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
 
-      const glow = card.querySelector(".skill-glow")
-      if (glow) {
-        glow.style.left = `${x - glow.offsetWidth / 2}px`
-        glow.style.top = `${y - glow.offsetHeight / 2}px`
-      }
-    })
-  })
-}
+      const rotateX = (y / rect.height - 0.5) * -10
+      const rotateY = (x / rect.width - 0.5) * 10
 
+      skillsContainer.style.transform = `
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+      `
+    })
+
+    skillsContainer.addEventListener("mouseleave", () => {
+      skillsContainer.style.transform = "rotateX(0deg) rotateY(0deg)"
+    })
+
+    const skillCards = document.querySelectorAll(".skill-card")
+
+    skillCards.forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+
+        const glow = card.querySelector(".skill-glow")
+        if (glow) {
+          glow.style.left = `${x - glow.offsetWidth / 2}px`
+          glow.style.top = `${y - glow.offsetHeight / 2}px`
+        }
+      })
+    })
+  }
+}
 
 let lang = "pt"
 const toggle = document.getElementById("langToggle")
@@ -158,9 +148,7 @@ if (toggle) {
   })
 }
 
-
 setLanguage()
-
 
 const observerOptions = {
   root: null,
@@ -173,7 +161,6 @@ const sectionObserver = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) {
       entry.target.classList.add("visible")
 
-      
       if (entry.target.classList.contains("skills")) {
         const levelBars = entry.target.querySelectorAll(".skill-card")
         levelBars.forEach((card, index) => {
@@ -186,11 +173,9 @@ const sectionObserver = new IntersectionObserver((entries) => {
   })
 }, observerOptions)
 
-
 document.querySelectorAll(".section-animate").forEach((section) => {
   sectionObserver.observe(section)
 })
-
 
 const aboutSlider = document.querySelector(".about-slider")
 
@@ -203,13 +188,11 @@ if (aboutSlider) {
   let currentSlide = 0
   const totalSlides = slides.length
 
- 
   let isDragging = false
   let startX = 0
   let currentTranslate = 0
   let prevTranslate = 0
   const animationID = 0
-
 
   function updateSlider(animate = true) {
     if (!animate) {
@@ -220,7 +203,6 @@ if (aboutSlider) {
 
     track.style.transform = `translateX(-${currentSlide * 100}%)`
 
-   
     dots.forEach((dot, index) => {
       dot.classList.toggle("active", index === currentSlide)
     })
@@ -234,13 +216,11 @@ if (aboutSlider) {
     }
   }
 
-
   function goToSlide(index) {
     currentSlide = Math.max(0, Math.min(index, totalSlides - 1))
     updateSlider()
   }
 
- 
   if (arrowRight) {
     arrowRight.addEventListener("click", () => {
       if (currentSlide === totalSlides - 1) {
@@ -250,7 +230,6 @@ if (aboutSlider) {
       }
     })
   }
-
 
   dots.forEach((dot, index) => {
     dot.addEventListener("click", () => {
@@ -277,7 +256,6 @@ if (aboutSlider) {
     const slideWidth = aboutSlider.offsetWidth
     currentTranslate = prevTranslate + diff
 
- 
     const maxTranslate = 0
     const minTranslate = -(totalSlides - 1) * slideWidth
     currentTranslate = Math.max(minTranslate - 100, Math.min(maxTranslate + 100, currentTranslate))
@@ -293,7 +271,6 @@ if (aboutSlider) {
     const slideWidth = aboutSlider.offsetWidth
     const movedBy = currentTranslate - prevTranslate
 
- 
     if (movedBy < -100 && currentSlide < totalSlides - 1) {
       currentSlide++
     } else if (movedBy > 100 && currentSlide > 0) {
@@ -317,7 +294,6 @@ if (aboutSlider) {
   track.addEventListener("touchmove", touchMove, { passive: true })
   track.addEventListener("touchend", touchEnd)
 
-
   track.addEventListener("contextmenu", (e) => {
     if (isDragging) e.preventDefault()
   })
@@ -331,9 +307,7 @@ if (aboutSlider) {
     }
   })
 
-
   updateSlider(false)
-
 
   window.addEventListener("resize", () => {
     prevTranslate = -currentSlide * aboutSlider.offsetWidth
@@ -341,7 +315,6 @@ if (aboutSlider) {
     updateSlider(false)
   })
 }
-
 
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
@@ -356,7 +329,6 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     }
   })
 })
-
 
 document.querySelectorAll(".social-top a").forEach((link) => {
   link.addEventListener("click", function (e) {
@@ -377,7 +349,6 @@ if (bgGlow) {
     bgGlow.style.transform = `translateX(-50%) translateY(${scrolled * 0.3}px)`
   })
 }
-
 
 const heroSubtitle = document.querySelector(".hero-subtitle")
 
@@ -402,37 +373,39 @@ function typeEffect(element, text, speed = 100) {
 //   setTimeout(() => typeEffect(heroSubtitle, text, 80), 1000);
 // }
 
-
 window.addEventListener("load", () => {
   document.body.classList.add("loaded")
 })
 
+// Only apply 3D effects on non-touch devices
+const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0
 
-document.querySelectorAll(".project-card").forEach((card) => {
-  card.addEventListener("mousemove", (e) => {
-    const rect = card.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+if (!isTouchDevice) {
+  document.querySelectorAll(".project-card").forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
 
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
+      const centerX = rect.width / 2
+      const centerY = rect.height / 2
 
-    const rotateX = (y - centerY) / 20
-    const rotateY = (centerX - x) / 20
+      const rotateX = (y - centerY) / 20
+      const rotateY = (centerX - x) / 20
 
-    card.style.transform = `
-      perspective(1000px)
-      rotateX(${rotateX}deg)
-      rotateY(${rotateY}deg)
-      translateY(-8px)
-    `
+      card.style.transform = `
+        perspective(1000px)
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+        translateY(-8px)
+      `
+    })
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(1000px) rotateX(0) rotateY(0) translateY(0)"
+    })
   })
-
-  card.addEventListener("mouseleave", () => {
-    card.style.transform = "perspective(1000px) rotateX(0) rotateY(0) translateY(0)"
-  })
-})
-
+}
 
 document.querySelectorAll(".contact-item").forEach((item) => {
   item.addEventListener("mouseenter", () => {
